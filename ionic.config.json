@@ -1,0 +1,7 @@
+{
+  "name": "mindmap",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
