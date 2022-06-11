@@ -1,0 +1,31 @@
+.ProfileContainer_item {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+}
+.ProfileContainer_item h3 {
+	font-size: 24px;
+	line-height: 24px;
+	color: rgb(178, 178, 178);
+	text-decoration: underline;
+}
+.ProfileContainer_item p {
+	font-size: 18px;
+	line-height: 24px;
+	color: #fff;
+}
+.ProfileContainer_image {
+	width: 150px;
+	height: 150px;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	pointer-events: none;
+	margin: 15px auto;
+}
+.ProfileContainer_image h3 {
+	color: #fff;
+	font-size: 64px;
+	line-height: 64px;
+}

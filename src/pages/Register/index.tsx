@@ -1,15 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { Link, useHistory } from 'react-router-dom'
 import { useAuthState } from 'react-firebase-hooks/auth'
-import {
-	auth,
-	logInWithEmailAndPassword,
-	registerWithEmailAndPassword,
-} from '../../firebase/auth'
+import { auth, registerWithEmailAndPassword } from '../../firebase/auth'
 import {
 	IonButton,
+	IonButtons,
 	IonContent,
 	IonHeader,
+	IonIcon,
 	IonInput,
 	IonItem,
 	IonLabel,
@@ -18,13 +15,12 @@ import {
 	IonToast,
 	IonToolbar,
 } from '@ionic/react'
+import { chevronBack } from 'ionicons/icons'
+import { useHistory } from 'react-router'
 interface InputChangeEventDetail {
 	value: string | undefined | null
 }
-interface InputCustomEvent extends CustomEvent {
-	detail: InputChangeEventDetail
-	target: HTMLIonInputElement
-}
+
 const Register: React.FC = () => {
 	const [username, setUsername] = useState<string>('')
 	const [email, setEmail] = useState<string>('')
@@ -35,7 +31,7 @@ const Register: React.FC = () => {
 	const history = useHistory()
 	const handleSubmit = async (e: any) => {
 		e.preventDefault()
-		if (username.length && email.length && password.length) {
+		if (username.length && email.length && password.length > 5) {
 			registerWithEmailAndPassword(username, email, password)
 		} else {
 			setToastMessage('Please, fill out form')
@@ -44,7 +40,8 @@ const Register: React.FC = () => {
 	}
 	useEffect(() => {
 		if (loading) return
-		if (user) history.push('/mindmap')
+		if (user)
+			window.history.pushState({ urlPath: '/workouts' }, '', '/workouts')
 	}, [user, loading])
 
 	return (
@@ -52,6 +49,11 @@ const Register: React.FC = () => {
 			<IonHeader>
 				<IonToolbar>
 					<IonTitle>Register</IonTitle>
+					<IonButtons>
+						<IonButton onClick={history.goBack}>
+							<IonIcon icon={chevronBack}></IonIcon>
+						</IonButton>
+					</IonButtons>
 				</IonToolbar>
 			</IonHeader>
 			<IonContent>
@@ -78,7 +80,7 @@ const Register: React.FC = () => {
 						/>
 					</IonItem>
 					<IonButton className='ion-margin-top' type='submit' expand='block'>
-						Login
+						Register
 					</IonButton>
 				</form>
 			</IonContent>
@@ -86,7 +88,7 @@ const Register: React.FC = () => {
 				isOpen={showToast}
 				onDidDismiss={() => setShowToast(false)}
 				message={toastMessage}
-				duration={200}
+				duration={350}
 			/>
 		</IonPage>
 	)

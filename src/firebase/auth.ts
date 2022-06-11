@@ -4,11 +4,11 @@ import {
 	createUserWithEmailAndPassword,
 	sendPasswordResetEmail,
 	signOut,
+	updateProfile,
+	updatePassword,
+	EmailAuthProvider,
 } from 'firebase/auth'
-import { addDoc, collection } from 'firebase/firestore'
-
 import { app } from '.'
-import { db } from './firestore'
 
 export const auth = getAuth(app)
 export const logInWithEmailAndPassword = async (
@@ -21,6 +21,20 @@ export const logInWithEmailAndPassword = async (
 		console.error(err)
 	}
 }
+const colors = [
+	'ff9966',
+	'996633',
+	'ffcccc',
+	'cc6633',
+	'669966',
+	'339966',
+	'ccffcc',
+	'33cc99',
+	'339999',
+	'339966',
+	'ccffcc',
+	'33cc99',
+]
 export const registerWithEmailAndPassword = async (
 	name: string,
 	email: string,
@@ -29,11 +43,9 @@ export const registerWithEmailAndPassword = async (
 	try {
 		const res = await createUserWithEmailAndPassword(auth, email, password)
 		const user = res.user
-		await addDoc(collection(db, 'users'), {
-			uid: user.uid,
-			name,
-			authProvider: 'local',
-			email,
+		updateProfile(user, {
+			displayName: name,
+			photoURL: '#' + colors[Math.round(Math.random() * colors.length)],
 		})
 	} catch (err) {
 		console.error(err)
@@ -42,11 +54,17 @@ export const registerWithEmailAndPassword = async (
 export const sendPasswordReset = async (email: string) => {
 	try {
 		await sendPasswordResetEmail(auth, email)
-		alert('Password reset link sent!')
 	} catch (err) {
 		console.error(err)
 	}
 }
 export const logout = () => {
 	signOut(auth)
+}
+export const changePassword = async (newPass: string) => {
+	try {
+		updatePassword(auth.currentUser!, newPass)
+	} catch (err) {
+		console.error(err)
+	}
 }

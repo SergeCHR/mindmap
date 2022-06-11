@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react'
-import { Link, useHistory } from 'react-router-dom'
 import { useAuthState } from 'react-firebase-hooks/auth'
+import { useHistory } from 'react-router'
 import { auth, logInWithEmailAndPassword } from '../../firebase/auth'
 import {
 	IonButton,
+	IonButtons,
 	IonContent,
 	IonHeader,
 	IonInput,
 	IonItem,
 	IonLabel,
+	IonNavLink,
 	IonPage,
 	IonTitle,
 	IonToast,
@@ -18,14 +20,15 @@ import {
 const Login: React.FC = () => {
 	const [email, setEmail] = useState<string>('')
 	const [password, setPassword] = useState<string>('')
-	const [user, loading] = useAuthState(auth)
+	const [user, error, loading] = useAuthState(auth)
 	const [toastMessage, setToastMessage] = useState<string>('')
 	const [showToast, setShowToast] = useState<boolean>(false)
 	const history = useHistory()
-	const handleSubmit = (e: any) => {
+	const handleSubmit = async (e: any) => {
 		e.preventDefault()
 		if (email.length && password.length) {
-			logInWithEmailAndPassword(email, password)
+			await logInWithEmailAndPassword(email, password)
+			if (!error) history.replace('/profile')
 		} else {
 			setToastMessage('Please, fill out form')
 			setShowToast(true)
@@ -35,7 +38,11 @@ const Login: React.FC = () => {
 		if (loading) {
 			return
 		}
-		if (user) history.push('/mindmap')
+		console.log(user)
+		if (user) {
+			history.push('/profile')
+			localStorage.setItem('user', user.uid)
+		}
 	}, [user, loading])
 
 	return (
@@ -65,13 +72,22 @@ const Login: React.FC = () => {
 						Login
 					</IonButton>
 				</form>
+				<IonItem>
+					<IonButton
+						onClick={() => history.push('/register')}
+						size='default'
+						type='button'
+						fill='clear'
+						color='primary'>
+						New to us? Register
+					</IonButton>
+				</IonItem>
 			</IonContent>
-
 			<IonToast
 				isOpen={showToast}
 				onDidDismiss={() => setShowToast(false)}
 				message={toastMessage}
-				duration={200}
+				duration={350}
 			/>
 		</IonPage>
 	)
