@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { auth, logout } from '../../firebase/auth'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { logOutOutline } from 'ionicons/icons'
@@ -23,7 +23,6 @@ const ProfileContainer: React.FC = () => {
 	const toggleModalOpen = () => {
 		setModalOpen((prev) => !prev)
 	}
-
 	const toggleDarkModeHandler = () => {
 		document.body.classList.toggle('dark')
 	}

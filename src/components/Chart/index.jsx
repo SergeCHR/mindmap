@@ -4,7 +4,6 @@ import {
 	endOfMonth,
 	format,
 	isSameMonth,
-	parseISO,
 	startOfMonth,
 } from 'date-fns'
 import useMeasure from 'react-use-measure'
@@ -13,10 +12,12 @@ import './Chart.css'
 export default function Chart({ entries }) {
 	let [ref, bounds] = useMeasure()
 
-	if (!entries.length) {
+	if (entries.length < 2) {
 		return (
 			<div className='Chart__defaultTextContainer'>
-				<p className='Chart_defaultText'>Add a tracked set to see a chart!</p>
+				<p className='Chart_defaultText'>
+					At least one month of progress required!
+				</p>
 			</div>
 		)
 	}
@@ -33,9 +34,9 @@ export default function Chart({ entries }) {
 
 function ChartInner({ data, width, height }) {
 	let margin = {
-		top: 10,
+		top: 30,
 		right: 10,
-		bottom: 20,
+		bottom: 40,
 		left: 24,
 	}
 
@@ -50,13 +51,13 @@ function ChartInner({ data, width, height }) {
 
 	let yScale = d3
 		.scaleLinear()
-		.domain(d3.extent(data.map((d) => d.estimatedMax)))
+		.domain(d3.extent(data.map((d) => d.amountOfReps)))
 		.range([height - margin.bottom, margin.top])
 
 	let line = d3
 		.line()
 		.x((d) => xScale(d.date))
-		.y((d) => yScale(d.estimatedMax))
+		.y((d) => yScale(d.amountOfReps))
 	let d = line(data)
 
 	return (
@@ -118,12 +119,12 @@ function ChartInner({ data, width, height }) {
 				{data.map((d, i) => (
 					<motion.circle
 						initial={{ cy: height }}
-						animate={{ cy: yScale(d.estimatedMax) }}
+						animate={{ cy: yScale(d.amountOfReps) }}
 						transition={{ duration: 1, delay: 0.1 * i, type: 'spring' }}
 						key={d.date + i}
 						r='5'
 						cx={xScale(d.date)}
-						cy={yScale(d.estimatedMax)}
+						cy={yScale(d.amountOfReps)}
 						fill='currentColor'
 						strokeWidth={2}
 						stroke={

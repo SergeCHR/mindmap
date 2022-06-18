@@ -7,24 +7,32 @@ import {
 	IonTabs,
 } from '@ionic/react'
 import { fitness, list, person } from 'ionicons/icons'
-import { Redirect, Route } from 'react-router'
+import { Route } from 'react-router'
 import Profile from '../pages/Profile'
-import Templates from '../pages/Templates'
+import Articles from '../pages/Articles'
+import ArticlePage from '../pages/Articles/Article'
 import Workouts from '../pages/Workouts'
+import Exercise from '../pages/Workouts/Exercise'
 export const AuthentificatedContent: React.FC<{ user: any }> = ({ user }) => {
 	return (
 		<IonTabs>
 			<IonRouterOutlet>
-				<Route exact path='/my-templates'>
-					<Templates />
+				<Route exact path='/articles'>
+					<Articles />
 				</Route>
 				<Route exact path='/workouts'>
 					<Workouts />
 				</Route>
+				<Route path={`/workouts/:workoutId/:exerciseId`}>
+					<Exercise />
+				</Route>
+				<Route path='/articles/:slug/'>
+					<ArticlePage />
+				</Route>
 				<Route exact path='/profile' component={Profile} />
 			</IonRouterOutlet>
-			<IonTabBar slot='bottom'>
-				<IonTabButton tab='my-templates' href='/my-templates'>
+			<IonTabBar color={'tertiary'} slot='bottom'>
+				<IonTabButton tab='articles' href='/articles'>
 					<IonIcon icon={list} />
 					<IonLabel>Fitness Info</IonLabel>
 				</IonTabButton>

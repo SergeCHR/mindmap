@@ -24,16 +24,11 @@ export const logInWithEmailAndPassword = async (
 const colors = [
 	'ff9966',
 	'996633',
-	'ffcccc',
 	'cc6633',
 	'669966',
 	'339966',
-	'ccffcc',
 	'33cc99',
 	'339999',
-	'339966',
-	'ccffcc',
-	'33cc99',
 ]
 export const registerWithEmailAndPassword = async (
 	name: string,
@@ -46,6 +41,16 @@ export const registerWithEmailAndPassword = async (
 		updateProfile(user, {
 			displayName: name,
 			photoURL: '#' + colors[Math.round(Math.random() * colors.length)],
+		})
+		const commonOptions = {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+		}
+		const dbRes = await fetch('http://localhost:5000/users', {
+			...commonOptions,
+			body: JSON.stringify({ firebaseId: user?.uid }),
 		})
 	} catch (err) {
 		console.error(err)

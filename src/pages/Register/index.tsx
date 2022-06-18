@@ -17,15 +17,12 @@ import {
 } from '@ionic/react'
 import { chevronBack } from 'ionicons/icons'
 import { useHistory } from 'react-router'
-interface InputChangeEventDetail {
-	value: string | undefined | null
-}
 
 const Register: React.FC = () => {
 	const [username, setUsername] = useState<string>('')
 	const [email, setEmail] = useState<string>('')
 	const [password, setPassword] = useState<string>('')
-	const [user, loading] = useAuthState(auth)
+	const [user, error, loading] = useAuthState(auth)
 	const [toastMessage, setToastMessage] = useState<string>('')
 	const [showToast, setShowToast] = useState<boolean>(false)
 	const history = useHistory()
@@ -36,12 +33,12 @@ const Register: React.FC = () => {
 		} else {
 			setToastMessage('Please, fill out form')
 			setShowToast(true)
+			if (!error) history.replace('/workouts')
 		}
 	}
 	useEffect(() => {
 		if (loading) return
-		if (user)
-			window.history.pushState({ urlPath: '/workouts' }, '', '/workouts')
+		if (user) history.push('/workouts')
 	}, [user, loading])
 
 	return (
@@ -49,7 +46,7 @@ const Register: React.FC = () => {
 			<IonHeader>
 				<IonToolbar>
 					<IonTitle>Register</IonTitle>
-					<IonButtons>
+					<IonButtons slot='start'>
 						<IonButton onClick={history.goBack}>
 							<IonIcon icon={chevronBack}></IonIcon>
 						</IonButton>
@@ -58,7 +55,7 @@ const Register: React.FC = () => {
 			</IonHeader>
 			<IonContent>
 				<form
-					style={{ maxWidth: 576, margin: '32px auto' }}
+					style={{ maxWidth: 576, margin: '32px auto', color: '#339966' }}
 					onSubmit={handleSubmit}
 					className='ion-padding'>
 					<IonItem>

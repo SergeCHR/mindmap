@@ -28,7 +28,7 @@ const Login: React.FC = () => {
 		e.preventDefault()
 		if (email.length && password.length) {
 			await logInWithEmailAndPassword(email, password)
-			if (!error) history.replace('/profile')
+			if (!error) history.replace('/workouts')
 		} else {
 			setToastMessage('Please, fill out form')
 			setShowToast(true)
@@ -38,9 +38,8 @@ const Login: React.FC = () => {
 		if (loading) {
 			return
 		}
-		console.log(user)
 		if (user) {
-			history.push('/profile')
+			history.push('/workouts')
 			localStorage.setItem('user', user.uid)
 		}
 	}, [user, loading])

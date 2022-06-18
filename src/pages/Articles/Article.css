@@ -1,0 +1,31 @@
+.Article h2 {
+	font-size: 36px;
+	line-height: 48px;
+	font-weight: 700;
+	color: #6a64ff;
+}
+.Article p {
+	font-size: 18px;
+	line-height: 24px;
+}
+.Article h3 {
+	font-size: 32px;
+	line-height: 36px;
+	font-weight: 900;
+	text-decoration: underline;
+	color: #6a64ff;
+}
+.Article ul {
+	padding: 0;
+	margin: 0;
+	list-style: none;
+}
+.Article li {
+	font-size: 16px;
+	line-height: 24px;
+}
+.Article li::before {
+	color: #6a64ff;
+	content: '⦿';
+	margin-inline: 10px;
+}
