@@ -26,7 +26,7 @@ const Articles: React.FC = () => {
 	const [articles, setArticles] = useState<Article[]>([])
 	useEffect(() => {
 		const getArticlesData = async () => {
-			const res = await fetch('http://localhost:5000/info')
+			const res = await fetch('https://evening-earth-40603.herokuapp.com/info')
 			const data = await res.json()
 			setArticles(data as Article[])
 		}

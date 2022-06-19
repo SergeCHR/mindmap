@@ -36,9 +36,9 @@ const Exercise: React.FC = () => {
 	const deleteActivity = async () => {
 		try {
 			const res = await fetch(
-				`http://localhost:5000/users/${localStorage.getItem('user')}/${
-					match?.params.workoutId
-				}/${match?.params.exerciseId}/activity`,
+				`https://evening-earth-40603.herokuapp.com/users/${localStorage.getItem(
+					'user'
+				)}/${match?.params.workoutId}/${match?.params.exerciseId}/activity`,
 				{
 					method: 'DELETE',
 					body: JSON.stringify({
@@ -104,9 +104,9 @@ const Exercise: React.FC = () => {
 		const getWorkoutExercise = async () => {
 			try {
 				const res = await fetch(
-					`http://localhost:5000/users/${localStorage.getItem('user')}/${
-						match?.params.workoutId
-					}/${match?.params.exerciseId}`
+					`https://evening-earth-40603.herokuapp.com/users/${localStorage.getItem(
+						'user'
+					)}/${match?.params.workoutId}/${match?.params.exerciseId}`
 				)
 				const data = await res.json()
 				const modifiedActivities = data.activities

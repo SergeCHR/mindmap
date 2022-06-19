@@ -48,10 +48,13 @@ export const registerWithEmailAndPassword = async (
 				'Content-Type': 'application/json',
 			},
 		}
-		const dbRes = await fetch('http://localhost:5000/users', {
-			...commonOptions,
-			body: JSON.stringify({ firebaseId: user?.uid }),
-		})
+		const dbRes = await fetch(
+			'https://evening-earth-40603.herokuapp.com/users',
+			{
+				...commonOptions,
+				body: JSON.stringify({ firebaseId: user?.uid }),
+			}
+		)
 	} catch (err) {
 		console.error(err)
 	}

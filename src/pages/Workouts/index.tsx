@@ -50,7 +50,9 @@ const Mindmap: React.FC = () => {
 	const [user] = useAuthState(auth)
 	useEffect(() => {
 		const getUserWorkouts = async () => {
-			const res = await fetch(`http://localhost:5000/users/${user?.uid}`)
+			const res = await fetch(
+				`https://evening-earth-40603.herokuapp.com/users/${user?.uid}`
+			)
 			const data = await res.json()
 			const modifiedData = Object.keys(data.workouts).map(
 				(workout) => data.workouts[workout] as WorkoutData
@@ -77,7 +79,7 @@ const Mindmap: React.FC = () => {
 	const deleteExercise = async () => {
 		try {
 			const res = await fetch(
-				`http://localhost:5000/users/${localStorage.getItem(
+				`https://evening-earth-40603.herokuapp.com/users/${localStorage.getItem(
 					'user'
 				)}/${getCurrentAccordionItem()}/${deleteItem}`,
 				{
@@ -105,7 +107,7 @@ const Mindmap: React.FC = () => {
 	const deleteMuscleGroup = async () => {
 		try {
 			const res = await fetch(
-				`http://localhost:5000/users/${localStorage.getItem(
+				`https://evening-earth-40603.herokuapp.com/users/${localStorage.getItem(
 					'user'
 				)}/${deleteItem}`,
 				{

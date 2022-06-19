@@ -28,7 +28,7 @@ const ArticlePage: React.FC = () => {
 	useEffect(() => {
 		const getArticlesData = async () => {
 			const res = await fetch(
-				`http://localhost:5000/info/${match?.params.slug}`
+				`https://evening-earth-40603.herokuapp.com/info/${match?.params.slug}`
 			)
 			const data = await res.json()
 			setArticle(data as Article)

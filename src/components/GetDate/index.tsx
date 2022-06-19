@@ -27,7 +27,9 @@ const DateTime: React.FC<DateTimeProps> = ({ url, handleEdit, dateVal }) => {
 		try {
 			console.log(dateVal)
 			const res = await fetch(
-				`http://localhost:5000/users/${localStorage.getItem('user')}/${url}`,
+				`https://evening-earth-40603.herokuapp.com/users/${localStorage.getItem(
+					'user'
+				)}/${url}`,
 				{
 					method: 'PUT',
 					body: JSON.stringify({
