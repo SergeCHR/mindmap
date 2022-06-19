@@ -148,8 +148,12 @@ const Exercise: React.FC = () => {
 				<IonCard>
 					{exerciseList.map((exercise, idx) => (
 						<>
-							<IonCardContent key={new Date(exercise.date).toDateString()}>
-								{exercise.amountOfReps} reps
+							<IonCardContent
+								style={{
+									paddingBottom: 20,
+								}}
+								key={new Date(exercise.date).toDateString()}>
+								<p style={{ fontSize: 18 }}>{exercise.amountOfReps} reps</p>
 								<GetDate
 									url={`${match.params.workoutId}/${match.params.exerciseId}/activity`}
 									dateVal={exercise.date}
