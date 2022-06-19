@@ -21,6 +21,8 @@ import { SingleExercise } from '.'
 import ExerciseControls from '../../components/ExerciseControls'
 import CreateModal from '../../components/CreateModal'
 import DismissModal from '../../components/DismissModal'
+import GetDate from '../../components/GetDate'
+
 const Exercise: React.FC = () => {
 	const [chartEntries, setChartEntries] = useState<SingleExercise[]>([])
 	const [exerciseList, setExerciesList] = useState<SingleExercise[]>([])
@@ -62,12 +64,14 @@ const Exercise: React.FC = () => {
 		setIsDismissModal(true)
 	}
 	const handleCreateActivity = (amount: string) => {
-		if (!exerciseList?.length) return
-		const currWorkoutList = exerciseList.concat([
+		const currWorkoutList = [
+			...exerciseList,
 			{ amountOfReps: parseInt(amount), date: new Date(Date.now()) },
-		])
+		]
+
 		setExerciesList(currWorkoutList)
 	}
+
 	function groupData(data: any) {
 		const map = new Map()
 		for (const { date, amountOfReps } of data) {
@@ -85,6 +89,16 @@ const Exercise: React.FC = () => {
 		}
 		return Array.from(map.values())
 	}
+	const handleEditActivity = (date: Date, newDate: Date) => {
+		const index = exerciseList.findIndex((el) => el.date === date)
+		let currExercises = [...exerciseList]
+		currExercises[index].date = newDate
+		currExercises = currExercises.sort((a: any, b: any) =>
+			a.date > b.date ? 1 : -1
+		)
+		setExerciesList(currExercises)
+		setChartEntries(groupData(currExercises))
+	}
 	const [modalOpen, setModalOpen] = useState<boolean>(false)
 	useEffect(() => {
 		const getWorkoutExercise = async () => {
@@ -95,15 +109,14 @@ const Exercise: React.FC = () => {
 					}/${match?.params.exerciseId}`
 				)
 				const data = await res.json()
-				console.log(data)
-				const chartData = groupData(data.activities)
-				setChartEntries(chartData)
 				const modifiedActivities = data.activities
 					.map((el: SingleExercise) => ({
 						amountOfReps: el.amountOfReps,
 						date: new Date(el.date),
 					}))
 					.sort((a: any, b: any) => (a.date > b.date ? 1 : -1))
+				const chartData = groupData(modifiedActivities)
+				setChartEntries(chartData)
 				setExerciesList(modifiedActivities || [])
 			} catch (err: any) {
 				console.error(err.message)
@@ -137,6 +150,11 @@ const Exercise: React.FC = () => {
 						<>
 							<IonCardContent key={new Date(exercise.date).toDateString()}>
 								{exercise.amountOfReps} reps
+								<GetDate
+									url={`${match.params.workoutId}/${match.params.exerciseId}/activity`}
+									dateVal={exercise.date}
+									handleEdit={handleEditActivity}
+								/>
 								<IonButton
 									style={{
 										position: 'absolute',

@@ -13,12 +13,13 @@ import {
 	IonTitle,
 	IonToolbar,
 } from '@ionic/react'
-import { arrowDownCircle, add, close } from 'ionicons/icons'
+import { arrowDownCircle, add, close, calendar } from 'ionicons/icons'
 import { useEffect, useRef, useState } from 'react'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { Link } from 'react-router-dom'
 import CreateModal from '../../components/CreateModal'
 import DismissModal from '../../components/DismissModal'
+import GetDate from '../../components/GetDate'
 import { auth } from '../../firebase/auth'
 export type SingleExercise = {
 	date: Date
@@ -33,7 +34,7 @@ type WorkoutData = {
 	exercises: ExerciseData[]
 }
 const Mindmap: React.FC = () => {
-	const [workoutsList, setWorkoutsList] = useState<WorkoutData[] | null>(null)
+	const [workoutsList, setWorkoutsList] = useState<WorkoutData[]>([])
 	const accordionGroupRef = useRef<HTMLIonAccordionGroupElement>(null)
 	const getCurrentAccordionItem = () => {
 		if (accordionGroupRef.current) {
@@ -59,14 +60,13 @@ const Mindmap: React.FC = () => {
 		getUserWorkouts()
 	}, [])
 	const handleMuscleGroup = (muscleGroup: string) => {
-		if (!workoutsList?.length) return
-		const currWorkoutList = workoutsList.concat([
+		const currWorkoutList = [
+			...workoutsList,
 			{ title: muscleGroup, exercises: [] },
-		])
+		]
 		setWorkoutsList(currWorkoutList)
 	}
 	const handleExercise = (exercise: string) => {
-		if (!workoutsList?.length) return
 		const index = workoutsList.findIndex(
 			(el) => el.title === getCurrentAccordionItem()
 		)
